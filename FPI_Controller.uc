@@ -39,6 +39,11 @@ reliable client function ReportTime()
 	Mutate("fpi time"@WorldInfo.GRI.ElapsedTime);
 }
 
+simulated exec function SetText(string Text)
+{
+    FPI_PRI(PlayerReplicationInfo).SetSpecialText(Text);
+}
+
 reliable server function ServerPurchaseItem(int CharID, Rx_BuildingAttachment_PT PT)	// Called when someone attempts to purchase an item
 {
 	if(CharID == 0)	// Is the item being purchased a beacon? Beacon ID is 0

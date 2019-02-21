@@ -12,13 +12,11 @@ enum Team
     TEAM_GDI,
     TEAM_NOD,
     TEAM_UNOWNED
-}
+};
 
-var FPI_ServerTravelMutator ServerTravelMutator;
 var FPI_Sys_Mutator SystemMutator;
 
 var config bool bEnableCreditMutator;
-var config bool bEnableServerTravelMutator;
 var config string ServerMutatorVersion;
 
 /** List of SteamIDs authorised for Administator. */
@@ -39,6 +37,21 @@ function PostBeginPlay()
     SaveConfig();
 }
 
+function bool CheckReplacement(Actor Other)
+{
+    if(Rx_TeamInfo(Other) != None)
+    {
+        Rx_Game(WorldInfo.Game).PlayerControllerClass = class'FPI_Controller';
+        Rx_Game(WorldInfo.Game).HudClass = class'FPI_HUD';
+        Rx_Game(WorldInfo.Game).PlayerReplicationInfoClass = class'FPI_PRI';
+        Rx_Game(WorldInfo.Game).AccessControlClass = class'FPI_AccessControl';
+        Rx_Game(WorldInfo.Game).PurchaseSystemClass = class'FPI_PurchaseSystem';
+        Rx_Game(WorldInfo.Game).DefaultPawnClass = class'FPI_Pawn';
+    }
+
+    return true;
+}
+
 function InitMutator(string Options, out string ErrorMessage)
 {
     SystemMutator = spawn(class'FPI_Sys_Mutator');
@@ -56,27 +69,14 @@ simulated function Tick(float DeltaTime) // Tick for our Admin HUD
 /***************** Mutator Hooks *****************/
 
 function OnMatchStart()
-{
-    MessageAll("Welcome to the Fair Play Inc. RX Server!\nPlease review the rules and have fun.\nDon't forget to vote for a commander!");  
-
-    if (bEnableServerTravelMutator)
-        ServerTravelMutator = spawn(class'FPI_ServerTravelMutator');
-
-    if (ServerTravelMutator != None)
-    {
-        ServerTravelMutator.InitThisMutator();
-         `log("[Mutator Handler] Initing Server Travel Mutator");
-    }
-
+{  
+    MessageAll("Welcome to the Fair Play Inc. server!\nPlease review the rules and have fun.\nDon't forget to vote for a commander!");
     SetTimer(90, true, 'CommanderReminder');
+    SetTimer(180, true, 'Broadcast');
 }
-
 
 function OnMatchEnd()
 {
-    if (ServerTravelMutator != None && ShouldSplit)
-        ServerTravelMutator.FPIServerTravel();
-
     ClearTimer('CommanderReminder');
 }
 
@@ -92,11 +92,18 @@ function OnPlayerConnect(PlayerController NewPlayer,  string SteamID)
         if(IsModSteamID(SteamID))
             FPI_PRI(NewPlayer.PlayerReplicationInfo).bModeratorOnly = true;
     }
+
+    `WorldInfoObject.Game.BroadcastHandler.Broadcast(None, NewPlayer.GetHumanReadableName()@"joined the game", 'Say');
+}
+
+function OnPlayerDisconnect(Controller PlayerLeaving)
+{
+    `WorldInfoObject.Game.BroadcastHandler.Broadcast(None, PlayerLeaving.GetHumanReadableName()@"left the game", 'Say');
 }
 
 function OnBuildingDestroyed(PlayerReplicationInfo Destroyer, Rx_Building_Team_Internals BuildingInternals, Rx_Building Building, class<DamageType> DamageType)
 {
-    //
+
 }
 
 /***************** Custom Functions *****************/
@@ -107,7 +114,7 @@ function bool IsAdminSteamID(String ID)
     For (i=0; i<AdministratorSteamIDs.Length; i++)
         if (ID == AdministratorSteamIDs[i])
             return true;
-    else return false;
+        else return false;
 }
 
 function bool IsModSteamID(String ID)
@@ -116,7 +123,7 @@ function bool IsModSteamID(String ID)
     For (i=0; i<ModeratorSteamIDs.Length; i++)
         if (ID == ModeratorSteamIDs[i])
             return true;
-    else return false;
+        else return false;
 }
 
 static function MessageAll(string message)
@@ -133,6 +140,7 @@ static function MessageAll(string message)
 static function MessageAdmins(string message, optional name MsgColor = 'Green')
 {
     local FPI_Controller c;
+    
     ForEach class'WorldInfo'.static.GetWorldInfo().AllControllers(class'FPI_Controller', c)
     {
         if (c != None)
@@ -158,7 +166,6 @@ static function MessageTeam(int TeamID, string message)
     }
 }
 
-
 function CommanderReminder()
 {
     local FPI_Controller c;
@@ -176,19 +183,14 @@ function CommanderReminder()
     }
 
     if (!GDIHasCommander)
-        MessageTeam(TEAM_GDI, "You have no commander, vote for one.");
+        MessageTeam(TEAM_GDI, "You have no commander, vote for one");
     if (!NodHasCommander)
-        MessageTeam(TEAM_NOD, "You have no commander, vote for one.");
+        MessageTeam(TEAM_NOD, "You have no commander, vote for one");
 }
 
-static function string GetCustomWeaponNames(UTWeapon ThisWeapon)
+function Broadcast()
 {
-  if (ThisWeapon.IsA('FPI_Weapon_ProxyC4'))
-    return "Proxy C4";
-  if (ThisWeapon.IsA('FPI_Weapon_RepairGunAdvanced'))
-    return "Advanced Repair Gun";
-  else
-    return ThisWeapon.ItemName;
+    `WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 }
 
 /***************** Commands *****************/
@@ -207,7 +209,6 @@ function Mutate(String MutateString, PlayerController Sender)
 
     if (MutateStringSplit.Length == 1 && MutateStringSplit[0] ~= "fpi")
     {
-
         MessageSpecific(Sender, "- Use 'fpi help' for help.", 'Red');
         return;
     }
@@ -221,16 +222,7 @@ function Mutate(String MutateString, PlayerController Sender)
          */
 
         if (MutateStringSplit[1] ~= "help")
-            MessageSpecific(Sender, "Commands: split_server, laser, assignuuid", 'Red');
-        else if (MutateStringSplit[1] ~= "split_server")
-        {
-            if (!Sender.PlayerReplicationInfo.bAdmin)
-            {
-                MessageSpecific(Sender, "You lack authentication for that.", 'Red');
-                return;
-            }
-                ShouldSplit = true;
-        }
+            MessageSpecific(Sender, "Commands: assignuuid", 'Red');
         else if (MutateStringSplit[1] ~= "assignuuid")
         {
             if (!Sender.PlayerReplicationInfo.bAdmin)

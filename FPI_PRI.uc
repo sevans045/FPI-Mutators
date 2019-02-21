@@ -6,12 +6,20 @@
 
  class FPI_PRI extends Rx_PRI;
 
-var repnotify string MutatorVersion;
+var repnotify string MutatorVersion, SpecialText;
 
  replication
 {
 	if(bNetDirty || bNetInitial)
-		MutatorVersion;
+		MutatorVersion, SpecialText;
+}
+
+simulated event ReplicatedEvent(name VarName)
+{
+    if(VarName == 'SpecialText')
+        SetText(SpecialText);
+    else
+       super.ReplicatedEvent(VarName);
 }
 
 reliable client function WriteMutatorVersion(string Version)
@@ -66,4 +74,19 @@ function SetChar(class<Rx_FamilyInfo> newFamily, Pawn pawn, optional bool isFree
       return;
    
    equipStartWeapons(isFreeClass);
+}
+
+simulated function string GetSpecialText()
+{
+	return SpecialText;
+}
+
+simulated function SetSpecialText(string Text)
+{
+	SetText(Text);
+}
+
+simulated function SetText(string Text)
+{
+	SpecialText = Text;
 }

@@ -43,7 +43,7 @@ simulated function DrawServerFPS()
 	X = RenxHud.Canvas.SizeX*0.005;
 	Y = RenxHud.Canvas.SizeY*0.60;
 	Canvas.SetPos(X,Y);
-	Canvas.SetDrawColor(0,255,0,255);
+	Canvas.SetDrawColor(0,0,255,200);
 	Canvas.Font = Font'RenXHud.Font.RadioCommand_Medium';
 	
 	if (FPI_MutController == None)
@@ -52,10 +52,8 @@ simulated function DrawServerFPS()
 	else {
 		hudMessage = "[Sarah's Admin Panel]\n";
 		fpsMessage = FPI_MutController.ServerFPS == 0 ? "Running As Client Or No Data!" : string(FPI_MutController.ServerFPS);
-		hudMessage $= "  SFPS: " $ fpsMessage $ " | Delta Time: " $ FPI_MutController.ServerDeltaTime $ " | Actors: " $ string(FPI_MutController.CurrentActors) $ "\n";
-		//hudMessage $= "  NodVeh: " $ string(FPI_MutController.CurrentVehiclesNod) $ " | GDIVeh: " $ string(FPI_MutController.CurrentVehiclesGDI) $ " | UnOcVeh: " $ string(FPI_MutController.CurrentVehiclesUnoccupied) $ " | Tot: " $ string((FPI_MutController.CurrentVehiclesNod+FPI_MutController.CurrentVehiclesGDI+FPI_MutController.CurrentVehiclesUnoccupied)) $ "\n";
-		//hudMessage $= "  NodCredits: " $ string(FPI_MutController.ServerNodCredits) $ " | GDICredits: " $ string(FPI_MutController.ServerGDICredits) $ "\n";
-		hudMessage $= "  Admins: " $ string(FPI_MutController.StaffMembersIngame) $ "\n";
+		hudMessage $= "SFPS: " $ fpsMessage $ " | Delta Time: " $ FPI_MutController.ServerDeltaTime $ " | Actors: " $ string(FPI_MutController.CurrentActors) $ "\n";
+		hudMessage $= "Admins: " $ string(FPI_MutController.StaffMembersIngame) $ "\n";
 		Canvas.DrawText(hudMessage);
 	}
 }
