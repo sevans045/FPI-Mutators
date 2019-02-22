@@ -39,6 +39,9 @@ function PostBeginPlay()
 
 function bool CheckReplacement(Actor Other)
 {
+    local FPI_CratePickup ReplacementCrate;
+	local Rx_CratePickup OldCrate;
+
     if(Rx_TeamInfo(Other) != None)
     {
         Rx_Game(WorldInfo.Game).PlayerControllerClass = class'FPI_Controller';
@@ -49,6 +52,16 @@ function bool CheckReplacement(Actor Other)
         Rx_Game(WorldInfo.Game).DefaultPawnClass = class'FPI_Pawn';
     }
 
+    if ((Rx_CratePickup(Other) != none) && (FPI_CratePickup(Other) == none)) //Blame HIHIHI if it breaks.
+	{
+		OldCrate = Rx_CratePickup(Other);
+		ReplacementCrate = FPI_CratePickup(HIHIReplaceWith(Other, "FPI.FPI_CratePickup"));
+
+		ReplacementCrate.bNoVehicleSpawn = OldCrate.bNoVehicleSpawn;
+		ReplacementCrate.bNoNukeDeath = OldCrate.bNoNukeDeath;
+		
+        return false;
+	}
     return true;
 }
 
@@ -191,6 +204,36 @@ function CommanderReminder()
 function Broadcast()
 {
     `WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
+}
+
+function actor ReplaceAndReturnReplaced(actor Other, string aClassName) //Blame HIHIHI if it breaks.
+{
+	local Actor A;
+	local class<Actor> aClass;
+	local PickupFactory OldFactory, NewFactory;
+
+	if(aClassName == "")
+	{
+		return none;
+	}
+
+
+	aClass = class<Actor>(DynamicLoadObject(aClassName, class'Class'));
+	if ( aClass != None )
+	{
+		A = Spawn(aClass,Other.Owner,,Other.Location, Other.Rotation);
+		if (A != None)
+		{
+			OldFactory = PickupFactory(Other);
+			NewFactory = PickupFactory(A);
+			if (OldFactory != None && NewFactory != None)
+			{
+				OldFactory.ReplacementFactory = NewFactory;
+				NewFactory.OriginalFactory = OldFactory;
+			}
+		}
+	}
+	return A;
 }
 
 /***************** Commands *****************/
