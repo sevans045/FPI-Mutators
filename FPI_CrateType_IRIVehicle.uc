@@ -69,8 +69,8 @@ DefaultProperties
 	BroadcastMessageIndex=6
 	PickupSound=SoundCue'Rx_Pickups.Sounds.SC_Crate_VehicleDrop'
 
-	Vehicles.Add(class'Rx_Vehicle_LAV');
-	Vehicles.Add(class'Rx_Vehicle_RocketArtillery');
-	Vehicles.Add(class'Rx_Vehicle_Superhind');
+	Vehicles.Add(class'FPI_Vehicle_LAV');
+	Vehicles.Add(class'FPI_Vehicle_RocketArtillery');
+	Vehicles.Add(class'FPI_Vehicle_Superhind');
 
 }

@@ -55,7 +55,7 @@ function bool CheckReplacement(Actor Other)
     if ((Rx_CratePickup(Other) != none) && (FPI_CratePickup(Other) == none)) //Blame HIHIHI if it breaks.
 	{
 		OldCrate = Rx_CratePickup(Other);
-		ReplacementCrate = FPI_CratePickup(HIHIReplaceWith(Other, "FPI.FPI_CratePickup"));
+		ReplacementCrate = FPI_CratePickup(ReplaceAndReturnReplaced(Other, "FPI.FPI_CratePickup"));
 
 		ReplacementCrate.bNoVehicleSpawn = OldCrate.bNoVehicleSpawn;
 		ReplacementCrate.bNoNukeDeath = OldCrate.bNoNukeDeath;
