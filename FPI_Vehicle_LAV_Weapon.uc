@@ -41,10 +41,10 @@ DefaultProperties
    
     VehicleClass=Class'FPI_Vehicle_LAV'
 
-    WeaponFireSnd(0)     = SoundCue'RX_VH_M2Bradley.Sounds.SC_M2Bradley_Gun'
+    WeaponFireSnd(0)     = SoundCue'RX_VH_LAV.Sounds.cannonfirecue'
     WeaponFireTypes(0)   = EWFT_Projectile
     WeaponProjectiles(0) = Class'FPI_Vehicle_LAV_Cannon'
-    WeaponFireSnd(1)     = SoundCue'RX_VH_M2Bradley.Sounds.SC_M2Bradley_Rocket'
+    WeaponFireSnd(1)     = SoundCue'RX_VH_LAV.Sounds.MissileFire'
     WeaponFireTypes(1)   = EWFT_Projectile
     WeaponProjectiles(1) = Class'FPI_Vehicle_LAV_Rocket'
 	
@@ -54,8 +54,8 @@ DefaultProperties
 	WeaponProjectiles_Heroic(0)= Class'FPI_Vehicle_LAV_Cannon'
 	WeaponProjectiles_Heroic(1)= Class'FPI_Vehicle_LAV_Rocket'
  
-	WeaponFireSounds_Heroic(0)=SoundCue'RX_VH_M2Bradley.Sounds.SC_M2Bradley_Gun'
-	WeaponFireSounds_Heroic(1)=SoundCue'RX_VH_M2Bradley.Sounds.SC_M2Bradley_Rocket'
+	WeaponFireSounds_Heroic(0)=SoundCue'RX_VH_LAV.Sounds.cannonfirecue'
+	WeaponFireSounds_Heroic(1)=SoundCue'RX_VH_LAV.Sounds.MissileFire'
     CrosshairMIC = MaterialInstanceConstant'RenX_AssetBase.UI.MI_Reticle_Tank_Type5A'
     
      // AI
