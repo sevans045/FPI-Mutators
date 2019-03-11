@@ -11,12 +11,14 @@ var config int MinimumPlayersForSuperweapon;
 var config bool bConsiderBuildingCount;
 var config string MutatorVersion;
 
-simulated function PostBeginPlay()
+/*
+simulated function PostBeginPlay() //The whole thing is unnecessary with the message gone (which doesn't seem to have been working anyway).
 {
     Super.PostBeginPlay();
 
-    Rx_HUD(myHud).Message(none, "This server is running using Sarah's FPI mutator package.", 'Say');
+    //Rx_HUD(myHud).Message(none, "This server is running using Sarah's FPI mutator package.", 'Say'); //Goku says this is annoying.
 }
+*/
 
 reliable client function WriteMutatorVersion(string Version)
 {
@@ -127,6 +129,24 @@ function int CountAllBuildings()
     	AllBuildings--;
     }
     return AllBuildings;
+}
+
+unreliable server function ServerSay( string Msg )
+{
+	if(Msg ~= "!about")
+	{
+		`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
+	}
+	Super.ServerSay(Msg);
+}
+
+unreliable server function ServerTeamSay( string Msg )
+{
+	if(Msg ~= "!about")
+	{
+		`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
+	}
+	Super.ServerTeamSay(Msg);
 }
 
 function BroadcastEnemySpotMessages() 

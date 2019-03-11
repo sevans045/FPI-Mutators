@@ -105,7 +105,7 @@ function OnMatchStart()
 {  
     MessageAll("Welcome to the Fair Play Inc. server!\nPlease review the rules and have fun.\nDon't forget to vote for a commander!");
     SetTimer(90, true, 'CommanderReminder');
-    SetTimer(180, true, 'Broadcast');
+    //SetTimer(900, true, 'Broadcast'); //Goku says this is annoying. Happens now on "!about" in chat.
 }
 
 function OnMatchEnd()
@@ -126,12 +126,12 @@ function OnPlayerConnect(PlayerController NewPlayer,  string SteamID)
             FPI_PRI(NewPlayer.PlayerReplicationInfo).bModeratorOnly = true;
     }
 
-    `WorldInfoObject.Game.BroadcastHandler.Broadcast(None, NewPlayer.GetHumanReadableName()@"joined the game", 'Say');
+    //`WorldInfoObject.Game.BroadcastHandler.Broadcast(None, NewPlayer.GetHumanReadableName()@"joined the game", 'Say'); //Goku says this is annoying.
 }
 
 function OnPlayerDisconnect(Controller PlayerLeaving)
 {
-    `WorldInfoObject.Game.BroadcastHandler.Broadcast(None, PlayerLeaving.GetHumanReadableName()@"left the game", 'Say');
+    //`WorldInfoObject.Game.BroadcastHandler.Broadcast(None, PlayerLeaving.GetHumanReadableName()@"left the game", 'Say'); //Goku says this is annoying.
 }
 
 function OnBuildingDestroyed(PlayerReplicationInfo Destroyer, Rx_Building_Team_Internals BuildingInternals, Rx_Building Building, class<DamageType> DamageType)
@@ -221,10 +221,12 @@ function CommanderReminder()
         MessageTeam(TEAM_NOD, "You have no commander, vote for one");
 }
 
+/*
 function Broadcast()
 {
-    `WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
+    //`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say'); //Goku says this is annoying. Now in FPI_Controller and activates on "!about" in teamsay or say.
 }
+*/
 
 function actor ReplaceAndReturnReplaced(actor Other, string aClassName) //Blame HIHIHI if it breaks.
 {
