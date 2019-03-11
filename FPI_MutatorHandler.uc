@@ -105,12 +105,13 @@ function OnMatchStart()
 {  
     MessageAll("Welcome to the Fair Play Inc. server!\nPlease review the rules and have fun.\nDon't forget to vote for a commander!");
     SetTimer(90, true, 'CommanderReminder');
-    //SetTimer(900, true, 'Broadcast'); //Goku says this is annoying. Happens now on "!about" in chat.
+    //SetTimer(900, true, 'Broadcast'); //Goku says this is annoying. Happens now on "!about" in chat and at end of match.
 }
 
 function OnMatchEnd()
 {
     ClearTimer('CommanderReminder');
+    SetTimer(3, false, 'Broadcast');
 }
 
 function OnPlayerConnect(PlayerController NewPlayer,  string SteamID)
@@ -221,12 +222,12 @@ function CommanderReminder()
         MessageTeam(TEAM_NOD, "You have no commander, vote for one");
 }
 
-/*
-function Broadcast()
+
+function Broadcast() //Reactivated - occurs at end of match. The same message also appears on "!about" in chat or teamchat
 {
-    //`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say'); //Goku says this is annoying. Now in FPI_Controller and activates on "!about" in teamsay or say.
+    `WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 }
-*/
+
 
 function actor ReplaceAndReturnReplaced(actor Other, string aClassName) //Blame HIHIHI if it breaks.
 {
