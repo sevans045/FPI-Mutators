@@ -52,27 +52,31 @@ function bool CheckReplacement(Actor Other)
         Rx_Game(WorldInfo.Game).DefaultPawnClass = class'FPI_Pawn';
     }
 
-    if (Other.IsA('Rx_InventoryManager_GDI_Hotwire'))
-	{
-		Rx_InventoryManager_GDI_Hotwire(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
-        Rx_InventoryManager_GDI_Hotwire(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
-        Rx_InventoryManager_GDI_Hotwire(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
-    } 
-    else if (Other.IsA('Rx_InventoryManager_Nod_Technician'))
-	{
-		Rx_InventoryManager_Nod_Technician(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
-        Rx_InventoryManager_Nod_Technician(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
-        Rx_InventoryManager_Nod_Technician(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
-    }
-    else if (Other.IsA('Rx_InventoryManager_GDI_Engineer'))
-    {
-        Rx_InventoryManager_GDI_Engineer(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGun';
-    }
-    else if (Other.IsA('Rx_InventoryManager_Nod_Engineer'))
-    {
-        Rx_InventoryManager_Nod_Engineer(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGun';
-    }
-    else if ((Rx_CratePickup(Other) != none) && (FPI_CratePickup(Other) == none)) //Blame HIHIHI if it breaks.
+    /* // Don't need this now that we have FPI InvManagers with the stuff in DefaultProperties. Bots maybe still use Rx InvManagers, but they don't need FPI rep guns and they
+    *   // don't mine.
+    *if (Other.IsA('Rx_InventoryManager_GDI_Hotwire'))
+	*{
+	*	Rx_InventoryManager_GDI_Hotwire(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+    *    Rx_InventoryManager_GDI_Hotwire(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+    *    Rx_InventoryManager_GDI_Hotwire(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
+    *} 
+    *else if (Other.IsA('Rx_InventoryManager_Nod_Technician'))
+	*{
+	*	Rx_InventoryManager_Nod_Technician(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+    *    Rx_InventoryManager_Nod_Technician(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+    *    Rx_InventoryManager_Nod_Technician(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
+    *}
+    *else if (Other.IsA('Rx_InventoryManager_GDI_Engineer'))
+    *{
+    *    Rx_InventoryManager_GDI_Engineer(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGun';
+    *}
+    *else if (Other.IsA('Rx_InventoryManager_Nod_Engineer'))
+    *{
+    *    Rx_InventoryManager_Nod_Engineer(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGun';
+    *}
+    */
+    
+    if ((Rx_CratePickup(Other) != none) && (FPI_CratePickup(Other) == none)) //Blame HIHIHI if it breaks.
 	{
 		OldCrate = Rx_CratePickup(Other);
 		ReplacementCrate = FPI_CratePickup(ReplaceAndReturnReplaced(Other, "FPI.FPI_CratePickup"));
