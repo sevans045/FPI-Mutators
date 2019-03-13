@@ -1,7 +1,7 @@
 /*********************************************************
 *
-* File: RxVehicle_RocketArtillery_Weapon.uc
-* Author: RenegadeX-Team
+* File: FPI_Vehicle_RocketArtillery_Weapon.uc
+* Author: Iridescence
 * Pojekt: Renegade-X UDK <www.renegade-x.com>
 *
 * Desc:
@@ -91,7 +91,8 @@ DefaultProperties
     ShotCost(1)=1
      
     bReloadAfterEveryShot = false
-    ReloadTime(0) = 7.65
+    ReloadTime(0) = 7.5
+    ReloadTime(1) = 7.5
 
     ReloadSound(0)=SoundCue'RX_VH_LightTank.Sounds.SC_LightTank_Reload'
     ReloadSound(1)=SoundCue'RX_VH_LightTank.Sounds.SC_LightTank_Reload'
