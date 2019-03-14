@@ -9,6 +9,12 @@ class FPI_PurchaseSystem extends Rx_PurchaseSystem;
 var int GDIItemPricesFPI[8];
 var int NodItemPricesFPI[8];
 
+simulated event PostBeginPlay()
+{
+	super.PostBeginPlay();
+	SetTimer( 3.0, false, UpdateMapSpecificInfantryClasses());
+}
+
 function bool Check()
 {
 	return true;
