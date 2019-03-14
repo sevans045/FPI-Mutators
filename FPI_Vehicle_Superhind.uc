@@ -111,15 +111,15 @@ defaultproperties
 //************** Vehicle Physics Properties **************\\
 //========================================================\\
 
-    Begin Object Class=UDKVehicleSimChopper Name=SimObject
-        MaxThrustForce=500.0
-		MaxReverseForce=300.0 
+Begin Object Class=UDKVehicleSimChopper Name=SimObject
+        MaxThrustForce=600.0
+        MaxReverseForce=400.0 
         LongDamping=0.5
-        MaxStrafeForce=300.0
+        MaxStrafeForce=400.0
         LatDamping=0.5
         MaxRiseForce=250.0
         UpDamping=0.6
-        TurnTorqueFactor=7000.0
+        TurnTorqueFactor=8600.0
         TurnTorqueMax=10000.0
         TurnDamping=1.0
         MaxYawRate=1.25
@@ -127,16 +127,16 @@ defaultproperties
         PitchTorqueMax=300.0
         PitchDamping=0.5
         RollTorqueTurnFactor=3000.0
-        RollTorqueStrafeFactor=600.0	// 1000
+        RollTorqueStrafeFactor=600.0    // 1000
         RollTorqueMax=3000.0
         RollDamping=1.0
         MaxRandForce=30.0
         RandForceInterval=0.5
         StopThreshold=10
         bAllowZThrust False
-		bFullThrustOnDirectionChange False
+        bFullThrustOnDirectionChange False
         bShouldCutThrustMaxOnImpact=true
-		bStabilizeStops=false
+        bStabilizeStops=false
     End Object
     SimObj=SimObject
     Components.Add(SimObject)
