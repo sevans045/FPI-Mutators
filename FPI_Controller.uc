@@ -502,3 +502,25 @@ function BroadcastEnemySpotMessages()
 		else
 		BroadCastSpotMessage(9, "Spotted"@SpottingMsg@LocationInfo);	
 }
+
+exec function ChangeBotsTo(int i)
+{
+	local UTBot B;
+	
+	foreach WorldInfo.AllControllers(class'UTBot', B)
+	{
+		if(B.Pawn == None)
+			continue;
+		if(i < 15) {
+			UTPlayerReplicationInfo(B.PlayerReplicationInfo).CharClassInfo = Rx_Game(WorldInfo.Game).PurchaseSystem.GDIInfantryClassesFPI[i];
+		} else {
+			UTPlayerReplicationInfo(B.PlayerReplicationInfo).CharClassInfo = Rx_Game(WorldInfo.Game).PurchaseSystem.NodInfantryClassesFPI[i-14];
+		} 
+		B.Pawn.NotifyTeamChanged();
+		if(i == 21) {
+			Rx_Bot(B).ChangeToSBH(true);
+		} else {
+			Rx_Pri(B.Pawn.PlayerReplicationInfo).equipStartWeapons();
+		}
+	}
+}

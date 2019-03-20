@@ -8,6 +8,8 @@ class FPI_PurchaseSystem extends Rx_PurchaseSystem;
 
 var int GDIItemPricesFPI[8];
 var int NodItemPricesFPI[8];
+var const array<class<Rx_FamilyInfo> >	GDIInfantryClassesFPI;
+var const array<class<Rx_FamilyInfo> >	NodInfantryClassesFPI;
 
 simulated event PostBeginPlay()
 {
@@ -18,6 +20,41 @@ simulated event PostBeginPlay()
 function bool Check()
 {
 	return true;
+}
+
+simulated function class<Rx_FamilyInfo> GetStartClass(byte TeamID, PlayerReplicationInfo PRI)
+{
+	if ( TeamID == TEAM_GDI )
+	{
+		//set starting class based on the last free class (nBab)
+		return GDIInfantryClassesFPI[Rx_PRI(PRI).LastFreeCharacterClass];
+	} 
+	else
+	{
+		//set starting class based on the last free class (nBab)
+		return NodInfantryClassesFPI[Rx_PRI(PRI).LastFreeCharacterClass];
+	}
+}
+
+simulated function class<Rx_FamilyInfo> GetHealerClass(byte TeamID)
+{
+	if ( TeamID == TEAM_GDI )
+	{
+		return GDIInfantryClassesFPI[13];
+	} 
+	else
+	{
+		return NodInfantryClassesFPI[13];
+	}
+}
+
+simulated function bool IsStealthBlackHand(Rx_PRI pri)
+{
+	if ( pri.CharClassInfo == NodInfantryClassesFPI[9] )
+	{
+		return True;
+	}
+	return False;
 }
 
 simulated function int GetItemPrices(byte teamID, int charid)
@@ -32,23 +69,49 @@ simulated function int GetItemPrices(byte teamID, int charid)
 	}
 }
 
+simulated function class<Rx_FamilyInfo> GetFamilyClass(byte teamID, int charid)
+{
+	if (teamID == TEAM_GDI)
+	{
+		return GDIInfantryClassesFPI[charid];
+	} 
+	else
+	{
+		return NodInfantryClassesFPI[charid];
+	}
+}
+
+/*******************************/
+/* Bot Specific Functionality  */
+/*******************************/
+
+function bool DoesHaveRepairGun( class<UTFamilyInfo> inFam )
+{
+	if ( inFam == GDIInfantryClasses[4] || inFam == NodInfantryClasses[4] || inFam == GDIInfantryClasses[14] || inFam == NodInfantryClasses[14] || 
+				inFam == GDIInfantryClassesFPI[4] || inFam == NodInfantryClassesFPI[4] || inFam == GDIInfantryClassesFPI[14] || inFam == NodInfantryClassesFPI[14] )
+	{
+		return true;
+	}
+	return false;	
+}
+
 DefaultProperties
 {
-	GDIInfantryClasses[0]  = class'FPI_FamilyInfo_GDI_Soldier'	
-	GDIInfantryClasses[1]  = class'FPI_FamilyInfo_GDI_Shotgunner'
-	GDIInfantryClasses[2]  = class'FPI_FamilyInfo_GDI_Grenadier'
-	GDIInfantryClasses[3]  = class'FPI_FamilyInfo_GDI_Marksman'
-	GDIInfantryClasses[4]  = class'FPI_FamilyInfo_GDI_Engineer'
-	GDIInfantryClasses[5]  = class'FPI_FamilyInfo_GDI_Officer'
-	GDIInfantryClasses[6]  = class'FPI_FamilyInfo_GDI_RocketSoldier'
-	GDIInfantryClasses[7]  = class'FPI_FamilyInfo_GDI_McFarland'
-	GDIInfantryClasses[8]  = class'FPI_FamilyInfo_GDI_Deadeye'
-	GDIInfantryClasses[9]  = class'FPI_FamilyInfo_GDI_Gunner'
-	GDIInfantryClasses[10] = class'FPI_FamilyInfo_GDI_Patch'
-	GDIInfantryClasses[11] = class'FPI_FamilyInfo_GDI_Havoc'
-	GDIInfantryClasses[12] = class'FPI_FamilyInfo_GDI_Sydney'
-	GDIInfantryClasses[13] = class'FPI_FamilyInfo_GDI_Mobius'
-	GDIInfantryClasses[14] = class'FPI_FamilyInfo_GDI_Hotwire'
+	GDIInfantryClassesFPI[0]  = class'FPI_FamilyInfo_GDI_Soldier'	
+	GDIInfantryClassesFPI[1]  = class'FPI_FamilyInfo_GDI_Shotgunner'
+	GDIInfantryClassesFPI[2]  = class'FPI_FamilyInfo_GDI_Grenadier'
+	GDIInfantryClassesFPI[3]  = class'FPI_FamilyInfo_GDI_Marksman'
+	GDIInfantryClassesFPI[4]  = class'FPI_FamilyInfo_GDI_Engineer'
+	GDIInfantryClassesFPI[5]  = class'FPI_FamilyInfo_GDI_Officer'
+	GDIInfantryClassesFPI[6]  = class'FPI_FamilyInfo_GDI_RocketSoldier'
+	GDIInfantryClassesFPI[7]  = class'FPI_FamilyInfo_GDI_McFarland'
+	GDIInfantryClassesFPI[8]  = class'FPI_FamilyInfo_GDI_Deadeye'
+	GDIInfantryClassesFPI[9]  = class'FPI_FamilyInfo_GDI_Gunner'
+	GDIInfantryClassesFPI[10] = class'FPI_FamilyInfo_GDI_Patch'
+	GDIInfantryClassesFPI[11] = class'FPI_FamilyInfo_GDI_Havoc'
+	GDIInfantryClassesFPI[12] = class'FPI_FamilyInfo_GDI_Sydney'
+	GDIInfantryClassesFPI[13] = class'FPI_FamilyInfo_GDI_Mobius'
+	GDIInfantryClassesFPI[14] = class'FPI_FamilyInfo_GDI_Hotwire'
 
 	GDIItemPricesFPI[0] = 1000 
 	GDIItemPricesFPI[1] = 800 
@@ -59,21 +122,21 @@ DefaultProperties
 	GDIItemPricesFPI[6] = 300 
 	GDIItemPricesFPI[7] = 300 
 
-	NodInfantryClasses[0]  = class'FPI_FamilyInfo_Nod_Soldier'
-	NodInfantryClasses[1]  = class'FPI_FamilyInfo_Nod_Shotgunner'
-	NodInfantryClasses[2]  = class'FPI_FamilyInfo_Nod_FlameTrooper'
-	NodInfantryClasses[3]  = class'FPI_FamilyInfo_Nod_Marksman'
-	NodInfantryClasses[4]  = class'FPI_FamilyInfo_Nod_Engineer'
-	NodInfantryClasses[5]  = class'FPI_FamilyInfo_Nod_Officer'
-	NodInfantryClasses[6]  = class'FPI_FamilyInfo_Nod_RocketSoldier'	
-	NodInfantryClasses[7]  = class'FPI_FamilyInfo_Nod_ChemicalTrooper'
-	NodInfantryClasses[8]  = class'FPI_FamilyInfo_Nod_blackhandsniper'
-	NodInfantryClasses[9]  = class'FPI_FamilyInfo_Nod_Stealthblackhand'
-	NodInfantryClasses[10] = class'FPI_FamilyInfo_Nod_LaserChainGunner'
-	NodInfantryClasses[11] = class'FPI_FamilyInfo_Nod_Sakura'		
-	NodInfantryClasses[12] = class'FPI_FamilyInfo_Nod_Raveshaw'//_Mutant'
-	NodInfantryClasses[13] = class'FPI_FamilyInfo_Nod_Mendoza'
-	NodInfantryClasses[14] = class'FPI_FamilyInfo_Nod_Technician'
+	NodInfantryClassesFPI[0]  = class'FPI_FamilyInfo_Nod_Soldier'
+	NodInfantryClassesFPI[1]  = class'FPI_FamilyInfo_Nod_Shotgunner'
+	NodInfantryClassesFPI[2]  = class'FPI_FamilyInfo_Nod_FlameTrooper'
+	NodInfantryClassesFPI[3]  = class'FPI_FamilyInfo_Nod_Marksman'
+	NodInfantryClassesFPI[4]  = class'FPI_FamilyInfo_Nod_Engineer'
+	NodInfantryClassesFPI[5]  = class'FPI_FamilyInfo_Nod_Officer'
+	NodInfantryClassesFPI[6]  = class'FPI_FamilyInfo_Nod_RocketSoldier'	
+	NodInfantryClassesFPI[7]  = class'FPI_FamilyInfo_Nod_ChemicalTrooper'
+	NodInfantryClassesFPI[8]  = class'FPI_FamilyInfo_Nod_blackhandsniper'
+	NodInfantryClassesFPI[9]  = class'FPI_FamilyInfo_Nod_Stealthblackhand'
+	NodInfantryClassesFPI[10] = class'FPI_FamilyInfo_Nod_LaserChainGunner'
+	NodInfantryClassesFPI[11] = class'FPI_FamilyInfo_Nod_Sakura'		
+	NodInfantryClassesFPI[12] = class'FPI_FamilyInfo_Nod_Raveshaw'//_Mutant'
+	NodInfantryClassesFPI[13] = class'FPI_FamilyInfo_Nod_Mendoza'
+	NodInfantryClassesFPI[14] = class'FPI_FamilyInfo_Nod_Technician'
 	
 	NodItemPricesFPI[0] = 1000 
 	NodItemPricesFPI[1] = 800 
