@@ -133,31 +133,20 @@ function int CountAllBuildings()
 
 unreliable server function ServerSay( string Msg )
 {
-	local Rx_PurchaseSystem PS;
-
+	Super.ServerSay(Msg);
 	if(Msg ~= "!about")
 	{
 		`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 	}
-	if(Msg ~= "!PSystemClass")
-	{
-		`WorldInfoObject.Game.Broadcast(None, String(Rx_Game(WorldInfo.Game).PurchaseSystemClass), 'Say');
-	}
-	if(Msg ~= "!PSystem")
-	{
-		PS = Rx_Game(WorldInfo.Game).PurchaseSystem;
-		`WorldInfoObject.Game.Broadcast(None, String(PS), 'Say');
-	}
-	Super.ServerSay(Msg);
 }
 
 unreliable server function ServerTeamSay( string Msg )
 {
+	Super.ServerTeamSay(Msg);
 	if(Msg ~= "!about")
 	{
 		`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 	}
-	Super.ServerTeamSay(Msg);
 }
 
 function BroadcastEnemySpotMessages() 
@@ -513,30 +502,6 @@ function BroadcastEnemySpotMessages()
 		else
 		BroadCastSpotMessage(9, "Spotted"@SpottingMsg@LocationInfo);	
 }
-
-/* //Changing bots back to regular Rx_FamilyInfo characters
-exec function ChangeBotsTo(int i)
-{
-	local UTBot B;
-	
-	foreach WorldInfo.AllControllers(class'UTBot', B)
-	{
-		if(B.Pawn == None)
-			continue;
-		if(i < 15) {
-			UTPlayerReplicationInfo(B.PlayerReplicationInfo).CharClassInfo = Rx_Game(WorldInfo.Game).PurchaseSystem.GDIInfantryClassesFPI[i];
-		} else {
-			UTPlayerReplicationInfo(B.PlayerReplicationInfo).CharClassInfo = Rx_Game(WorldInfo.Game).PurchaseSystem.NodInfantryClassesFPI[i-14];
-		} 
-		B.Pawn.NotifyTeamChanged();
-		if(i == 21) {
-			Rx_Bot(B).ChangeToSBH(true);
-		} else {
-			Rx_Pri(B.Pawn.PlayerReplicationInfo).equipStartWeapons();
-		}
-	}
-}
-*/
 
 DefaultProperties
 {

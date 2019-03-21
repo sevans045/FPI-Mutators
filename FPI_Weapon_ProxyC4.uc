@@ -382,5 +382,5 @@ DefaultProperties
 	bSplashJump=false
 	bRecommendSplashDamage=true
 	bSniping=false
-	CustomWeaponName = "Boom Bomb"
+	CustomWeaponName = "Proxy C4"
 }

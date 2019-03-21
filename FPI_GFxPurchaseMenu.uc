@@ -38,21 +38,24 @@ function ChangeDummyPawnClass(int classNum)
 {
     local class<Rx_FamilyInfo> rxCharInfo;   
 	
-	if (TeamID == TEAM_GDI) 
+	if(FPI_PurchaseSystem(rxPurchaseSystem) != none)
 	{
-	 	rxCharInfo = FPI_PurchaseSystem(rxPurchaseSystem).GDIInfantryClassesFPI[classNum];	
-	} else 
-	{
-		rxCharInfo = FPI_PurchaseSystem(rxPurchaseSystem).NodInfantryClassesFPI[classNum];	
+		if (TeamID == TEAM_GDI) 
+		{
+		 	rxCharInfo = FPI_PurchaseSystem(rxPurchaseSystem).GDIInfantryClassesFPI[classNum];	
+		} else 
+		{
+			rxCharInfo = FPI_PurchaseSystem(rxPurchaseSystem).NodInfantryClassesFPI[classNum];	
+		}
+		DummyPawn.SetHidden(false);
+		DummyPawn.SetCharacterClassFromInfo(rxCharInfo);
+		DummyPawn.RefreshAttachedWeapons();
 	}
-	DummyPawn.SetHidden(false);
-	DummyPawn.SetCharacterClassFromInfo(rxCharInfo);
-	DummyPawn.RefreshAttachedWeapons();
 }
 
 // This function only exists because of the sheer amount of indexes in this implementation of a Purchase Terminal.
 function class<Rx_FamilyInfo> IndexToClass(int index, byte TeamNum) {
-	if (rxPurchaseSystem != None) {
+	if (FPI_PurchaseSystem(rxPurchaseSystem) != none) {
 		if (TeamNum == TEAM_GDI)
 			return FPI_PurchaseSystem(rxPurchaseSystem).GDIInfantryClassesFPI[index];
 		else
