@@ -133,9 +133,20 @@ function int CountAllBuildings()
 
 unreliable server function ServerSay( string Msg )
 {
+	local Rx_PurchaseSystem PS;
+
 	if(Msg ~= "!about")
 	{
 		`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
+	}
+	if(Msg ~= "!PSystemClass")
+	{
+		`WorldInfoObject.Game.Broadcast(None, String(Rx_Game(WorldInfo.Game).PurchaseSystemClass), 'Say');
+	}
+	if(Msg ~= "!PSystem")
+	{
+		PS = Rx_Game(WorldInfo.Game).PurchaseSystem;
+		`WorldInfoObject.Game.Broadcast(None, String(PS), 'Say');
 	}
 	Super.ServerSay(Msg);
 }
@@ -503,6 +514,7 @@ function BroadcastEnemySpotMessages()
 		BroadCastSpotMessage(9, "Spotted"@SpottingMsg@LocationInfo);	
 }
 
+/* //Changing bots back to regular Rx_FamilyInfo characters
 exec function ChangeBotsTo(int i)
 {
 	local UTBot B;
@@ -523,4 +535,10 @@ exec function ChangeBotsTo(int i)
 			Rx_Pri(B.Pawn.PlayerReplicationInfo).equipStartWeapons();
 		}
 	}
+}
+*/
+
+DefaultProperties
+{
+	PTMenuClass = class'FPI_GFxPurchaseMenu'
 }

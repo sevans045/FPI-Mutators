@@ -85,11 +85,11 @@ reliable server function ServerSetLastFreeCharacter(int fClass)
 
 	if(TeamID == TEAM_GDI)
 	{
-		ClassList = class'Rx_PurchaseSystem'.default.FPI;
+		ClassList = class'FPI_PurchaseSystem'.default.GDIInfantryClassesFPI;
 	}
 	else if(TeamID == TEAM_NOD)
 	{
-		ClassList = class'Rx_PurchaseSystem'.default.NodInfantryClassesFPI;
+		ClassList = class'FPI_PurchaseSystem'.default.NodInfantryClassesFPI;
 	}
 
 	if(fClass < 0 || fClass > ClassList.Length || ClassList[fClass].default.BasePurchaseCost != 0)

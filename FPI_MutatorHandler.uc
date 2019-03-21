@@ -52,14 +52,14 @@ function bool CheckReplacement(Actor Other)
         Rx_Game(WorldInfo.Game).DefaultPawnClass = class'FPI_Pawn';
     }
 
-    /* // Don't need this now that we have FPI InvManagers with the stuff in DefaultProperties. Bots maybe still use Rx InvManagers, but they don't need FPI rep guns and they
-    *   // don't mine.
-    *if (Other.IsA('Rx_InventoryManager_GDI_Hotwire'))
-	*{
-	*	Rx_InventoryManager_GDI_Hotwire(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
-    *    Rx_InventoryManager_GDI_Hotwire(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
-    *    Rx_InventoryManager_GDI_Hotwire(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
-    *} 
+     // Don't need this now that we have FPI InvManagers with the stuff in DefaultProperties. Bots maybe still use Rx InvManagers, but they don't need FPI rep guns and they
+       // don't mine.
+    if (Other.IsA('Rx_InventoryManager_GDI_Hotwire'))
+	{
+		Rx_InventoryManager_GDI_Hotwire(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+        Rx_InventoryManager_GDI_Hotwire(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+        Rx_InventoryManager_GDI_Hotwire(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
+    } /*
     *else if (Other.IsA('Rx_InventoryManager_Nod_Technician'))
 	*{
 	*	Rx_InventoryManager_Nod_Technician(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';

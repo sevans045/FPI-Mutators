@@ -14,7 +14,7 @@ var const array<class<Rx_FamilyInfo> >	NodInfantryClassesFPI;
 simulated event PostBeginPlay()
 {
 	super.PostBeginPlay();
-	SetTimer( 3.0, false, UpdateMapSpecificInfantryClasses());
+	//SetTimer( 3.0, false, UpdateMapSpecificInfantryClasses());
 }
 
 function bool Check()

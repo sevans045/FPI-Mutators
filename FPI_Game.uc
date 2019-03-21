@@ -43,10 +43,10 @@ function SetPlayerDefaults(Pawn PlayerPawn)
 		if(PurchaseSystem.AirStrip != None) {
 			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = Rx_Bot(PlayerPawn.Controller).BotBuy(Rx_Bot(PlayerPawn.Controller), true);
 		} else if(PlayerPawn.PlayerReplicationInfo.GetTeamNum() == TEAM_GDI) {
-			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.GDIInfantryClassesFPI[Rand(PurchaseSystem.GDIInfantryClassesFPI.Length)];
+			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.GDIInfantryClasses[Rand(PurchaseSystem.GDIInfantryClasses.Length)];
 			`LogRxPub("GAME" `s "Spawn;" `s "player" `s `PlayerLog(PlayerPawn.PlayerReplicationInfo) `s "character" `s UTPlayerReplicationInfo(PlayerPawn.PlayerReplicationInfo).CharClassInfo);
 		} else if(PlayerPawn.PlayerReplicationInfo.GetTeamNum() == TEAM_NOD) {
-			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.NodInfantryClassesFPI[Rand(PurchaseSystem.NodInfantryClassesFPI.Length)];
+			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.NodInfantryClasses[Rand(PurchaseSystem.NodInfantryClasses.Length)];
 			`LogRxPub("GAME" `s "Spawn;" `s "player" `s `PlayerLog(PlayerPawn.PlayerReplicationInfo) `s "character" `s UTPlayerReplicationInfo(PlayerPawn.PlayerReplicationInfo).CharClassInfo);
 		}
 		//Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = class'Rx_FamilyInfo_Nod_StealthBlackHand';
@@ -55,9 +55,9 @@ function SetPlayerDefaults(Pawn PlayerPawn)
 	} else if(Rx_MapInfo(WorldInfo.GetMapInfo()).bIsDeathmatchMap)
 	{
 		if(PlayerPawn.PlayerReplicationInfo.GetTeamNum() == TEAM_GDI) {
-			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.GDIInfantryClassesFPI[Rand(PurchaseSystem.GDIInfantryClassesFPI.Length)];
+			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.GDIInfantryClasses[Rand(PurchaseSystem.GDIInfantryClasses.Length)];
 		} else if(PlayerPawn.PlayerReplicationInfo.GetTeamNum() == TEAM_NOD) {
-			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.NodInfantryClassesFPI[Rand(PurchaseSystem.NodInfantryClassesFPI.Length)];
+			Rx_Pri(PlayerPawn.PlayerReplicationInfo).CharClassInfo = PurchaseSystem.NodInfantryClasses[Rand(PurchaseSystem.NodInfantryClasses.Length)];
 		}
 		PlayerPawn.NotifyTeamChanged();
 	}
@@ -87,4 +87,5 @@ function SetPlayerDefaults(Pawn PlayerPawn)
 
 DefaultProperties
 {
+	PurchaseSystemClass = class'FPI_PurchaseSystem'
 }
