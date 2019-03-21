@@ -175,7 +175,7 @@ function bool IsTeamChangeEnabled()
 	else
 		if(FPIG.RTCDisabled())
 		{
-			CTextMessage("Team Change Unlocks In" @ RxG.GetRTCDisabledTimeString()); 
+			CTextMessage("Team Change Unlocks In" @ FPIG.GetRTCDisabledTimeString()); 
 			return false; 	
 		}
 	else
