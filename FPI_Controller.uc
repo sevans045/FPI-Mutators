@@ -7,9 +7,10 @@
 class FPI_Controller extends Rx_Controller
 config(FPI);
 
-var config int MinimumPlayersForSuperweapon;
+var config int MinimumPlayersForSuperweapon, MaximumPlayersForTeamChange, MinimumPlayerDifferenceForTeamChangeReenable;
 var config bool bConsiderBuildingCount;
 var config string MutatorVersion;
+
 
 /*
 simulated function PostBeginPlay() //The whole thing is unnecessary with the message gone (which doesn't seem to have been working anyway).
@@ -147,6 +148,42 @@ unreliable server function ServerTeamSay( string Msg )
 	{
 		`WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 	}
+}
+
+function bool IsTeamChangeEnabled()
+{
+	local FPI_Game FPIG;
+	local int PlayerCount, TeamSizeDifference;
+	local byte TeamID;
+	
+	FPIG = FPI_Game(WorldInfo.Game);
+	PlayerCount = `WorldInfoObject.Game.NumPlayers-1;
+	TeamSizeDifference = FPIG.Teams[TEAM_GDI].Size - FPIG.Teams[TEAM_NOD].Size;
+	TeamID = GetTeamNum();
+
+	if(PlayerCount > MaximumPlayersForTeamChange)
+	{
+		if(!(TeamID == TEAM_GDI && TeamSizeDifference < -MinimumPlayerDifferenceForTeamChangeReenable)) //If the difference between teams (GDI - Nod) is less than the negative minimum team size difference (more negative), then it's ok to go ahead with the switch EDIT: switched - if not  this, then don't switch
+		{
+			CTextMessage("Too many players to switch teams"); 
+			return false;
+		} else
+			if(!(TeamID == TEAM_NOD && TeamSizeDifference > MinimumPlayerDifferenceForTeamChangeReenable)) //Basically it's the other team, so you can just undo the negation and make it greater than and it'll be good.
+			{
+				CTextMessage("Too many players to switch teams"); 
+				return false;
+			} else			
+				if(TeamID == TEAM_GDI && TeamSizeDifference < -MinimumPlayerDifferenceForTeamChangeReenable) //If the difference between teams (GDI - Nod) is less than the negative minimum team size difference (more negative), then it's ok to go ahead with the switch EDIT: switched - if not  this, then don't switch
+				{
+					return true;
+				} else
+					if(TeamID == TEAM_NOD && TeamSizeDifference > MinimumPlayerDifferenceForTeamChangeReenable) //Basically it's the other team, so you can just undo the negation and make it greater than and it'll be good.
+					{
+						return true; //Oh, what has happened to this else if stuff? ALL ZE INDENTATIONS!!
+					}
+		return false; 
+	}
+	Super.IsTeamChangeEnabled();
 }
 
 function BroadcastEnemySpotMessages() 
