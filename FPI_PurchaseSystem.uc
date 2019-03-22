@@ -10,6 +10,8 @@ var int GDIItemPricesFPI[8];
 var int NodItemPricesFPI[8];
 var const array<class<Rx_FamilyInfo> >	GDIInfantryClassesFPI;
 var const array<class<Rx_FamilyInfo> >	NodInfantryClassesFPI;
+var const array<class<Rx_Weapon> >		GDIItemClassesFPI;
+var const array<class<Rx_Weapon> >		NodItemClassesFPI;
 
 simulated event PostBeginPlay()
 {
@@ -81,6 +83,18 @@ simulated function class<Rx_FamilyInfo> GetFamilyClass(byte teamID, int charid)
 	}
 }
 
+simulated function class<Rx_Weapon> GetItemClass(byte teamID, int itemid)
+{
+	if (teamID == TEAM_GDI)
+	{
+		return GDIItemClassesFPI[itemid];
+	} 
+	else
+	{
+		return NodItemClassesFPI[itemid];
+	}
+}
+
 /*******************************/
 /* Bot Specific Functionality  */
 /*******************************/
@@ -112,6 +126,10 @@ DefaultProperties
 	GDIInfantryClassesFPI[12] = class'FPI_FamilyInfo_GDI_Sydney'
 	GDIInfantryClassesFPI[13] = class'FPI_FamilyInfo_GDI_Mobius'
 	GDIInfantryClassesFPI[14] = class'FPI_FamilyInfo_GDI_Hotwire'
+
+	GDIItemClassesFPI[0]  = class'Rx_Weapon_IonCannonBeacon'
+	GDIItemClassesFPI[1]  = class'Rx_Weapon_Airstrike_GDI'
+	GDIItemClassesFPI[2]  = class'FPI_Weapon_RepairTool'
 
 	GDIItemPricesFPI[0] = 1000 
 	GDIItemPricesFPI[1] = 800 
@@ -146,4 +164,8 @@ DefaultProperties
 	NodItemPricesFPI[5] = 200
 	NodItemPricesFPI[6] = 300
 	NodItemPricesFPI[7] = 300
+
+	NodItemClassesFPI[0]  = class'Rx_Weapon_NukeBeacon'
+	NodItemClassesFPI[1]  = class'Rx_Weapon_Airstrike_Nod'
+	NodItemClassesFPI[2]  = class'FPI_Weapon_RepairTool'
 }

@@ -19,5 +19,5 @@ class FPI_InventoryManager extends Rx_InventoryManager
 
 	defaultproperties
 {
-	AvailableItems(4) = class'FPI_Weapon_RepairTool'
+	AvailableItems(5) = class'FPI_Weapon_RepairTool'
 }
