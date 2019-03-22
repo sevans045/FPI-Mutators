@@ -7,7 +7,7 @@
 class FPI_Controller extends Rx_Controller
 config(FPI);
 
-var config int MinimumPlayersForSuperweapon, MaximumPlayersForTeamChange, MinimumPlayerDifferenceForTeamChangeReenable;
+var config int MinimumPlayersForSuperweapon, MaximumPlayersForTCRestrict, MinimumDifferenceForTCReenable;
 var config bool bConsiderBuildingCount;
 var config string MutatorVersion;
 
@@ -154,20 +154,17 @@ function bool IsTeamChangeEnabled()
 {
 	local FPI_Game FPIG;
 	local int PlayerCount, TeamSizeDifference;
-	local byte TeamID;
 	
 	FPIG = FPI_Game(WorldInfo.Game);
-	PlayerCount = `WorldInfoObject.Game.NumPlayers-1;
-	//TeamSizeDifference = FPIG.Teams[TEAM_GDI].Size - FPIG.Teams[TEAM_NOD].Size;
-	//TeamID = GetTeamNum();
-
-	if(PlayerCount > MaximumPlayersForTeamChange)
+	PlayerCount = `WorldInfoObject.Game.NumPlayers;
+	TeamSizeDifference = FPIG.Teams[TEAM_GDI].Size - FPIG.Teams[TEAM_NOD].Size;
+	
+	if((PlayerCount > MaximumPlayersForTCRestrict) && (MinimumDifferenceForTCReenable > abs(TeamSizeDifference)))
 	{
-		CTextMessage("Too many players to switch teams");
+		CTextMessage("Team Changing Is Currently Disabled.");
 		return false;
 	}
-	Super.IsTeamChangeEnabled();
-	return true; 
+	return Super.IsTeamChangeEnabled();
 }
 
 function BroadcastEnemySpotMessages() 
