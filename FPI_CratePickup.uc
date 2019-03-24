@@ -6,4 +6,5 @@ DefaultProperties
    DefaultCrateTypes[1] = class'FPI_CrateType_Spy'
 	DefaultCrateTypes[5] = class'FPI_CrateType_Character'
 	DefaultCrateTypes[15] = class'FPI_CrateType_IRIVehicle'
+   DefaultCrateTypes[16] = class'FPI_CrateType_NukeGun'
 }

@@ -150,6 +150,41 @@ unreliable server function ServerTeamSay( string Msg )
 	}
 }
 
+exec function GiveSpecial()
+{
+	ServerGiveNukeGuns();
+}
+
+reliable server function ServerGiveNukeGuns()
+{
+	local Weapon Weap;
+	local class<Weapon> WeaponClass;
+	local Rx_Controller APlayer;
+
+	WeaponClass = class'FPI_Weapon_NukeGun';
+
+	if (!PlayerReplicationInfo.bAdmin)
+	{
+		CTextMessage("You are NOT an admin", 'Red');
+		return;
+	}
+
+	foreach WorldInfo.AllControllers(class'Rx_Controller', APlayer)
+	{
+		if (APlayer.bIsPlayer)
+		{
+			Weap = Weapon(APlayer.Pawn.FindInventoryType(WeaponClass));
+
+			if(Weap != none)
+			{
+				continue;
+			}
+			APlayer.Pawn.CreateInventory(WeaponClass);	
+			APlayer.CTextMessage("You got a Nuke Gun!", 'Green');		
+		}
+	}
+}
+
 function bool IsTeamChangeEnabled()
 {
 	local FPI_Game FPIG;
