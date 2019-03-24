@@ -1,7 +1,7 @@
 /*********************************************************
 *
-* File: Rx_Vehicle_RocketArtillery_Projectile.uc
-* Author: RenegadeX-Team
+* File: FPI_Vehicle_RocketArtillery_Projectile.uc
+* Author: Iridescence
 * Pojekt: Renegade-X UDK <www.renegade-x.com>
 *
 * Desc:
@@ -62,8 +62,8 @@ DefaultProperties
     Speed=4500
     MaxSpeed=4500
     LifeSpan=2.5
-    Damage=14
-    DamageRadius=200
+    Damage=15
+    DamageRadius=250
     MomentumTransfer=100000.000000
 	HeadShotDamageMult=10.0 // 5.0
 

@@ -52,6 +52,30 @@ function bool CheckReplacement(Actor Other)
         Rx_Game(WorldInfo.Game).DefaultPawnClass = class'FPI_Pawn';
     }
 
+     // Don't need this now that we have FPI InvManagers with the stuff in DefaultProperties. Bots maybe still use Rx InvManagers, but they don't need FPI rep guns and they
+       // don't mine.
+    if (Other.IsA('Rx_InventoryManager_GDI_Hotwire'))
+	{
+		Rx_InventoryManager_GDI_Hotwire(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+        Rx_InventoryManager_GDI_Hotwire(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+        Rx_InventoryManager_GDI_Hotwire(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
+    } /*
+    *else if (Other.IsA('Rx_InventoryManager_Nod_Technician'))
+	*{
+	*	Rx_InventoryManager_Nod_Technician(Other).ExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+    *    Rx_InventoryManager_Nod_Technician(Other).AvailableExplosiveWeapons[0] = class'FPI_Weapon_ProxyC4';
+    *    Rx_InventoryManager_Nod_Technician(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGunAdvanced';
+    *}
+    *else if (Other.IsA('Rx_InventoryManager_GDI_Engineer'))
+    *{
+    *    Rx_InventoryManager_GDI_Engineer(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGun';
+    *}
+    *else if (Other.IsA('Rx_InventoryManager_Nod_Engineer'))
+    *{
+    *    Rx_InventoryManager_Nod_Engineer(Other).PrimaryWeapons[0] = class'FPI_Weapon_RepairGun';
+    *}
+    */
+    
     if ((Rx_CratePickup(Other) != none) && (FPI_CratePickup(Other) == none)) //Blame HIHIHI if it breaks.
 	{
 		OldCrate = Rx_CratePickup(Other);
@@ -85,12 +109,13 @@ function OnMatchStart()
 {  
     MessageAll("Welcome to the Fair Play Inc. server!\nPlease review the rules and have fun.\nDon't forget to vote for a commander!");
     SetTimer(90, true, 'CommanderReminder');
-    SetTimer(180, true, 'Broadcast');
+    //SetTimer(900, true, 'Broadcast'); //Goku says this is annoying. Happens now on "!about" in chat and at end of match.
 }
 
 function OnMatchEnd()
 {
     ClearTimer('CommanderReminder');
+    SetTimer(3, false, 'Broadcast');
 }
 
 function OnPlayerConnect(PlayerController NewPlayer,  string SteamID)
@@ -106,12 +131,12 @@ function OnPlayerConnect(PlayerController NewPlayer,  string SteamID)
             FPI_PRI(NewPlayer.PlayerReplicationInfo).bModeratorOnly = true;
     }
 
-    `WorldInfoObject.Game.BroadcastHandler.Broadcast(None, NewPlayer.GetHumanReadableName()@"joined the game", 'Say');
+    //`WorldInfoObject.Game.BroadcastHandler.Broadcast(None, NewPlayer.GetHumanReadableName()@"joined the game", 'Say'); //Goku says this is annoying.
 }
 
 function OnPlayerDisconnect(Controller PlayerLeaving)
 {
-    `WorldInfoObject.Game.BroadcastHandler.Broadcast(None, PlayerLeaving.GetHumanReadableName()@"left the game", 'Say');
+    //`WorldInfoObject.Game.BroadcastHandler.Broadcast(None, PlayerLeaving.GetHumanReadableName()@"left the game", 'Say'); //Goku says this is annoying.
 }
 
 function OnBuildingDestroyed(PlayerReplicationInfo Destroyer, Rx_Building_Team_Internals BuildingInternals, Rx_Building Building, class<DamageType> DamageType)
@@ -201,10 +226,12 @@ function CommanderReminder()
         MessageTeam(TEAM_NOD, "You have no commander, vote for one");
 }
 
-function Broadcast()
+
+function Broadcast() //Reactivated - occurs at end of match. The same message also appears on "!about" in chat or teamchat
 {
     `WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 }
+
 
 function actor ReplaceAndReturnReplaced(actor Other, string aClassName) //Blame HIHIHI if it breaks.
 {

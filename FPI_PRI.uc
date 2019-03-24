@@ -76,6 +76,30 @@ function SetChar(class<Rx_FamilyInfo> newFamily, Pawn pawn, optional bool isFree
    equipStartWeapons(isFreeClass);
 }
 
+reliable server function ServerSetLastFreeCharacter(int fClass)
+{
+	local byte TeamID;
+	local array<class<Rx_FamilyInfo> > ClassList;
+
+	TeamID = GetTeamNum();
+
+	if(TeamID == TEAM_GDI)
+	{
+		ClassList = class'FPI_PurchaseSystem'.default.GDIInfantryClassesFPI;
+	}
+	else if(TeamID == TEAM_NOD)
+	{
+		ClassList = class'FPI_PurchaseSystem'.default.NodInfantryClassesFPI;
+	}
+
+	if(fClass < 0 || fClass > ClassList.Length || ClassList[fClass].default.BasePurchaseCost != 0)
+	{
+		return;
+	}
+
+	LastFreeCharacterClass = fClass;
+}
+
 simulated function string GetSpecialText()
 {
 	return SpecialText;
