@@ -35,6 +35,13 @@ function PostBeginPlay()
         ModeratorSteamIDs[i] = class'FPI_AccessControl'.static.FixSteamID(ModeratorSteamIDs[i]);
 
     SaveConfig();
+	
+    SetTimer(180.0f, true, nameof(Broadcast));
+}
+
+function Broadcast()
+{
+    `WorldInfoObject.Game.Broadcast(none, "This server is running using Sarah's FPI mutator package.", 'Say');
 }
 
 function bool CheckReplacement(Actor Other)
