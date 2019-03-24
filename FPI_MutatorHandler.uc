@@ -233,12 +233,12 @@ function CommanderReminder()
         MessageTeam(TEAM_NOD, "You have no commander, vote for one");
 }
 
-
+/* We don't need two of these...
 function Broadcast() //Reactivated - occurs at end of match. The same message also appears on "!about" in chat or teamchat
 {
     `WorldInfoObject.Game.Broadcast(None, "This server is running the FPI mutator package, created by Sarah", 'Say');
 }
-
+*/
 
 function actor ReplaceAndReturnReplaced(actor Other, string aClassName) //Blame HIHIHI if it breaks.
 {
